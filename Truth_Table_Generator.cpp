@@ -54,6 +54,43 @@ void Implies(bool *op1, bool *op2, const char *op_name1, const char *op_name2)
     }
 }
 
+// Function to Generate Truth Table of Negated Implication for two Variables
+void not_Implies(bool *op1, bool *op2, const char *op_name1, const char *op_name2)
+{
+    cout << " \t Truth Table of Implication is: \n";
+    cout << "\n"
+         << setw(10) << op_name1 << setw(10) << op_name2 << setw(15)<<"!( " << op_name1 << " -> " << op_name2 <<" )"<< "\n";
+    for (int i = 0; i < 4; i++)
+    {
+        bool result = (op1[i] == 1 && op2[i] == 0);
+        cout << setw(10) << op1[i] << setw(10) << op2[i] << setw(15) << result << "\n";
+    }
+}
+
+// Function to Generate Truth Table of NOR for two Variables
+void NOR(bool *op1, bool *op2, const char *op_name1, const char *op_name2)
+{
+    cout << "\t Truth Table of OR Operation:\n ";
+    cout << "\n"
+         << setw(10) << op_name1 << setw(10) << op_name2 << setw(15) << "!( " << op_name1 << " V " << op_name2 << " )" << "\n";
+    for (int i = 0; i < 4; i++)
+    {
+        cout << setw(10) << op1[i] << setw(10) << op2[i] << setw(15) << !(op1[i] || op2[i]) << "\n";
+    }
+}
+
+// Function to Generate Truth Table of NAND for two Variables
+void NAND(bool *op1, bool *op2, const char *op_name1, const char *op_name2)
+{
+    cout << "\t Truth Table of AND Operation:\n ";
+    cout << "\n"
+         << setw(10) << op_name1 << setw(10) << op_name2 << setw(15) << "!( " << op_name1 << " ^ " << op_name2 << " )" << "\n";
+    for (int i = 0; i < 4; i++)
+    {
+        cout << setw(10) << op1[i] << setw(10) << op2[i] << setw(15) << (op1[i] && op2[i]) << "\n";
+    }
+}
+
 // Function to Generate Truth Table of BiConditional for two Variables
 void Bicondi(bool *op1, bool *op2, const char *op_name1, const char *op_name2)
 {
@@ -63,6 +100,19 @@ void Bicondi(bool *op1, bool *op2, const char *op_name1, const char *op_name2)
     for (int i = 0; i < 4; i++)
     {
         bool result = (op1[i] == op2[i]);
+        cout << setw(10) << op1[i] << setw(10) << op2[i] << setw(15) << result << "\n";
+    }
+}
+
+// Function to Generate Truth Table of Negated BiConditional for two Variables
+void not_Bincondi(bool *op1, bool *op2, const char *op_name1, const char *op_name2)
+{
+    cout << " \t Truth Table of Negated Biconditional is: \n";
+    cout << "\n"
+         << setw(10) << op_name1 << setw(10) << op_name2 << setw(15) << "!( " << op_name1 << " <-> " << op_name2 << " )" << "\n";
+    for (int i = 0; i < 4; i++)
+    {
+        bool result = !(op1[i] == op2[i]);
         cout << setw(10) << op1[i] << setw(10) << op2[i] << setw(15) << result << "\n";
     }
 }
@@ -90,6 +140,32 @@ void Implies(bool *arr1, bool *arr2, bool *result)
         result[i] = !(arr1[i] == 1 && arr2[i] == 0);
     }
 }
+
+void not_Implies(bool *arr1, bool *arr2, bool *result)
+{
+    for (int i = 0; i < 8; i++)
+    {
+        result[i] = (arr1[i] == 1 && arr2[i] == 0);
+    }
+}
+
+void NAND(bool *arr1, bool *arr2, bool *result)
+{
+    for (int i = 0; i < 8; i++)
+    {
+        result[i] = !(arr1[i] && arr2[i]);
+    }
+}
+
+void NOR(bool *arr1, bool *arr2, bool *result)
+{
+    for (int i = 0; i < 8; i++)
+    {
+        result[i] = !(arr1[i] || arr2[i]);
+    }
+}
+
+ 
 
 bool *Negate(bool *arr, int size)
 {
@@ -154,6 +230,9 @@ void Table(bool *op1, bool *op2, const char *func1, bool *op3, const char *func2
     delete[] result_2;
 }
 
+void Table_(bool *op1, bool *op2, const char *func1, bool *op3, const char *func2, const char *op_name1, const char *op_name2, const char *op_name3)
+{
+}
 int main()
 {
     string exp;
@@ -379,6 +458,15 @@ int main()
             {
                 Bicondi(q, Negate(p, 4), "q", "!p");
             }
+            else if (input == "!(p^q)" || input == "!(q^p)")
+            {
+                NAND(p, q, "p", "q");
+            }
+            else if (input == "!(pVq)" || input == "!(qVp)")
+            {
+                NOR(p, q, "p", "q");
+            }
+
             else
             {
                 cout << " Invalid Expression\n";
@@ -394,6 +482,76 @@ int main()
             {
                 Bicondi(Negate(q, 4), Negate(p, 4), "!q", "!p");
             }
+            else if (input == "!(!p^q)" || input == "!(q^!p)")
+            {
+                NAND(Negate(p, 4), q, "!p", "q");
+            }
+            else if (input == "!(p^!q)" || input == "!(!q^p)")
+            {
+                NAND(p, Negate(q, 4), "!p", "q");
+            }
+            else if (input == "!(!p^!q)" || input == "!(!q^!p)")
+            {
+                NAND(Negate(p, 4), Negate(q, 4), "!p", "!q");
+            }
+            else if(input =="!(p->q)")
+            {
+                not_Implies(p,q,"p","q");
+            }
+            else if(input =="!(q->p)")
+            {
+                not_Implies(q,p,"q","p");
+            }
+        }
+        else if (input.length() == 8)
+        {
+            if (input == "!(p<->q)" || input == "!(q<->p)")
+            {
+                not_Bincondi(p, q, "p", "q");
+            }
+            else if(input =="!(!p->q)")
+            {
+                not_Implies(Negate(p,4),q,"!p","q");
+            }
+            else if(input =="!(!q->p)")
+            {
+                not_Implies(Negate(q,4),p,"!q","p");
+            }
+            else if(input =="!(p->!q)")
+            {
+                not_Implies(p,Negate(q,4),"p","!q");
+            }
+            else if(input =="!(q->!p)")
+            {
+                not_Implies(q,Negate(p,4),"q","!p");
+            }
+        }
+        else if (input.length() == 9)
+        {
+            if (input == "!(!p<->q)" || input == "!(q<->!p)")
+            {
+                not_Bincondi(Negate(p, 4), q, "!p", "q");
+            }
+            else if (input == "!(p<->!q)" || input == "!(!q<->p)")
+            {
+                not_Bincondi(p, Negate(q, 4), "p", "!q");
+            }
+            else if(input =="!(!p->!q)")
+            {
+                not_Implies(Negate(p,4),Negate(q,4),"!p","!q");
+            }
+            else if(input =="!(!q->!p)")
+            {
+                not_Implies(Negate(q,4),Negate(p,4),"!q","!p");
+            }
+        }
+        else if (input.length() == 10)
+        {
+            if (input == "!(!p<->!q)" || input == "!(!q<->!p)")
+            {
+                not_Bincondi(Negate(p, 4), Negate(q, 4), "!p", "!q");
+            }
+            
         }
     }
 
@@ -547,109 +705,139 @@ int main()
         }
 
         // Possiblities invloving implication and conjunction
-        else if(input == "(p^q)->r"){
-            Table(p,q,"^",r,"->","p","q","r");
+        else if (input == "(p^q)->r")
+        {
+            Table(p, q, "^", r, "->", "p", "q", "r");
         }
-        else if(input == "(!p^q)->r"){
-            Table(Negate(p,8),q,"^",r,"->","!p","q","r");
+        else if (input == "(!p^q)->r")
+        {
+            Table(Negate(p, 8), q, "^", r, "->", "!p", "q", "r");
         }
-        else if(input == "(p^!q)->r"){
-            Table(p,Negate(q,8),"^",r,"->","p","!q","r");
+        else if (input == "(p^!q)->r")
+        {
+            Table(p, Negate(q, 8), "^", r, "->", "p", "!q", "r");
         }
-        else if(input == "(p^q)->!r"){
-            Table(p,q,"^",Negate(r,8),"->","p","q","!r");
+        else if (input == "(p^q)->!r")
+        {
+            Table(p, q, "^", Negate(r, 8), "->", "p", "q", "!r");
         }
-        else if(input == "(!p^!q)->r"){
-            Table(Negate(p,8),Negate(q,8),"^",r,"->","!p","!q","r");
+        else if (input == "(!p^!q)->r")
+        {
+            Table(Negate(p, 8), Negate(q, 8), "^", r, "->", "!p", "!q", "r");
         }
-        else if(input == "(p^!q)->!r"){
-            Table(p,Negate(q,8),"^",Negate(r,8),"->","p","!q","!r");
+        else if (input == "(p^!q)->!r")
+        {
+            Table(p, Negate(q, 8), "^", Negate(r, 8), "->", "p", "!q", "!r");
         }
-        else if(input == "(!p^q)->!r"){
-            Table(Negate(p,8),q,"^",Negate(r,8),"->","!p","q","!r");
+        else if (input == "(!p^q)->!r")
+        {
+            Table(Negate(p, 8), q, "^", Negate(r, 8), "->", "!p", "q", "!r");
         }
-        else if(input == "(!p^!q)->!r"){
-            Table(Negate(p,8),Negate(q,8),"^",Negate(r,8),"->","!p","!q","!r");
-        }
-
-        else if(input =="(p->q)^r"){
-            Table(p,q,"->",r,"^","p","q","r");
-        }
-        else if(input =="(!p->q)^r"){
-            Table(Negate(p,8),q,"->",r,"^","!p","q","r");
-        }
-        else if(input =="(p->!q)^r"){
-            Table(p,Negate(q,8),"->",r,"^","p","!q","r");
-        }
-        else if(input =="(p->q)^!r"){
-            Table(p,q,"->",Negate(r,8),"^","p","q","!r");
-        }
-        else if(input =="(!p->!q)^r"){
-            Table(Negate(p,8),Negate(q,8),"->",r,"^","!p","!q","r");
-        }
-        else if(input =="(p->!q)^!r"){
-            Table(p,Negate(q,8),"->",Negate(r,8),"^","p","!q","!r");
-        }
-        else if(input =="(!p->q)^!r"){
-            Table(Negate(p,8),q,"->",Negate(r,8),"^","p","!q","!r");
-        }
-        else if(input =="(!p->!q)^!r"){
-            Table(Negate(p,8),Negate(q,8),"->",Negate(r,8),"^","!p","!q","!r");
+        else if (input == "(!p^!q)->!r")
+        {
+            Table(Negate(p, 8), Negate(q, 8), "^", Negate(r, 8), "->", "!p", "!q", "!r");
         }
 
+        else if (input == "(p->q)^r")
+        {
+            Table(p, q, "->", r, "^", "p", "q", "r");
+        }
+        else if (input == "(!p->q)^r")
+        {
+            Table(Negate(p, 8), q, "->", r, "^", "!p", "q", "r");
+        }
+        else if (input == "(p->!q)^r")
+        {
+            Table(p, Negate(q, 8), "->", r, "^", "p", "!q", "r");
+        }
+        else if (input == "(p->q)^!r")
+        {
+            Table(p, q, "->", Negate(r, 8), "^", "p", "q", "!r");
+        }
+        else if (input == "(!p->!q)^r")
+        {
+            Table(Negate(p, 8), Negate(q, 8), "->", r, "^", "!p", "!q", "r");
+        }
+        else if (input == "(p->!q)^!r")
+        {
+            Table(p, Negate(q, 8), "->", Negate(r, 8), "^", "p", "!q", "!r");
+        }
+        else if (input == "(!p->q)^!r")
+        {
+            Table(Negate(p, 8), q, "->", Negate(r, 8), "^", "p", "!q", "!r");
+        }
+        else if (input == "(!p->!q)^!r")
+        {
+            Table(Negate(p, 8), Negate(q, 8), "->", Negate(r, 8), "^", "!p", "!q", "!r");
+        }
 
         // possiblities involving implication and disjuntion
-    
-        else if(input == "(pVq)->r"){
-            Table(p,q,"V",r,"->","p","q","r");
+
+        else if (input == "(pVq)->r")
+        {
+            Table(p, q, "V", r, "->", "p", "q", "r");
         }
-        else if(input == "(!pVq)->r"){
-            Table(Negate(p,8),q,"V",r,"->","!p","q","r");
+        else if (input == "(!pVq)->r")
+        {
+            Table(Negate(p, 8), q, "V", r, "->", "!p", "q", "r");
         }
-        else if(input == "(pV!q)->r"){
-            Table(p,Negate(q,8),"V",r,"->","p","!q","r");
+        else if (input == "(pV!q)->r")
+        {
+            Table(p, Negate(q, 8), "V", r, "->", "p", "!q", "r");
         }
-        else if(input == "(pVq)->!r"){
-            Table(p,q,"V",Negate(r,8),"->","p","q","!r");
+        else if (input == "(pVq)->!r")
+        {
+            Table(p, q, "V", Negate(r, 8), "->", "p", "q", "!r");
         }
-        else if(input == "(!pV!q)->r"){
-            Table(Negate(p,8),Negate(q,8),"V",r,"->","!p","!q","r");
+        else if (input == "(!pV!q)->r")
+        {
+            Table(Negate(p, 8), Negate(q, 8), "V", r, "->", "!p", "!q", "r");
         }
-        else if(input == "(pV!q)->!r"){
-            Table(p,Negate(q,8),"V",Negate(r,8),"->","p","!q","!r");
+        else if (input == "(pV!q)->!r")
+        {
+            Table(p, Negate(q, 8), "V", Negate(r, 8), "->", "p", "!q", "!r");
         }
-        else if(input == "(!pVq)->!r"){
-            Table(Negate(p,8),q,"V",Negate(r,8),"->","!p","q","!r");
+        else if (input == "(!pVq)->!r")
+        {
+            Table(Negate(p, 8), q, "V", Negate(r, 8), "->", "!p", "q", "!r");
         }
-        else if(input == "(!pV!q)->!r"){
-            Table(Negate(p,8),Negate(q,8),"V",Negate(r,8),"->","!p","!q","!r");
+        else if (input == "(!pV!q)->!r")
+        {
+            Table(Negate(p, 8), Negate(q, 8), "V", Negate(r, 8), "->", "!p", "!q", "!r");
         }
 
-        else if(input =="(p->q)Vr"){
-            Table(p,q,"->",r,"V","p","q","r");
+        else if (input == "(p->q)Vr")
+        {
+            Table(p, q, "->", r, "V", "p", "q", "r");
         }
-        else if(input =="(!p->q)Vr"){
-            Table(Negate(p,8),q,"->",r,"V","!p","q","r");
+        else if (input == "(!p->q)Vr")
+        {
+            Table(Negate(p, 8), q, "->", r, "V", "!p", "q", "r");
         }
-        else if(input =="(p->!q)Vr"){
-            Table(p,Negate(q,8),"->",r,"V","p","!q","r");
+        else if (input == "(p->!q)Vr")
+        {
+            Table(p, Negate(q, 8), "->", r, "V", "p", "!q", "r");
         }
-        else if(input =="(p->q)V!r"){
-            Table(p,q,"->",Negate(r,8),"V","p","q","!r");
+        else if (input == "(p->q)V!r")
+        {
+            Table(p, q, "->", Negate(r, 8), "V", "p", "q", "!r");
         }
-        else if(input =="(!p->!q)Vr"){
-            Table(Negate(p,8),Negate(q,8),"->",r,"V","!p","!q","r");
+        else if (input == "(!p->!q)Vr")
+        {
+            Table(Negate(p, 8), Negate(q, 8), "->", r, "V", "!p", "!q", "r");
         }
-        else if(input =="(p->!q)V!r"){
-            Table(p,Negate(q,8),"->",Negate(r,8),"V","p","!q","!r");
+        else if (input == "(p->!q)V!r")
+        {
+            Table(p, Negate(q, 8), "->", Negate(r, 8), "V", "p", "!q", "!r");
         }
-        else if(input =="(!p->q)V!r"){
-            Table(Negate(p,8),q,"->",Negate(r,8),"V","p","!q","!r");
+        else if (input == "(!p->q)V!r")
+        {
+            Table(Negate(p, 8), q, "->", Negate(r, 8), "V", "p", "!q", "!r");
         }
-        else if(input =="(!p->!q)V!r"){
-            Table(Negate(p,8),Negate(q,8),"->",Negate(r,8),"V","!p","!q","!r");
+        else if (input == "(!p->!q)V!r")
+        {
+            Table(Negate(p, 8), Negate(q, 8), "->", Negate(r, 8), "V", "!p", "!q", "!r");
         }
-
     }
 
     return 0;
